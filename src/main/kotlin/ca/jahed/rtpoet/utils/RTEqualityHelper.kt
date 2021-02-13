@@ -7,9 +7,8 @@ import ca.jahed.rtpoet.rtmodel.rts.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
 import ca.jahed.rtpoet.rtmodel.types.RTPrimitiveType
 import ca.jahed.rtpoet.rtmodel.types.RTType
-import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
-class RTEqualityHelper : RTCachedVisitor() {
+class RTEqualityHelper {
     private val cache = mutableMapOf<Pair<RTElement, RTElement>, Boolean>()
 
     companion object {
@@ -55,6 +54,7 @@ class RTEqualityHelper : RTCachedVisitor() {
                 is RTSignal -> checkSignal(a, b as RTSignal)
                 is RTEnumeration -> checkEnumeration(a, b as RTEnumeration)
                 is RTConnector -> checkConnector(a, b as RTConnector)
+                is RTConnectorEnd -> checkConnectorEnd(a, b as RTConnectorEnd)
                 is RTParameter -> checkParameter(a, b as RTParameter)
                 is RTOperation -> checkOperation(a, b as RTOperation)
                 is RTAttribute -> checkAttribute(a, b as RTAttribute)
@@ -183,15 +183,12 @@ class RTEqualityHelper : RTCachedVisitor() {
     }
 
     private fun checkConnector(a: RTConnector, b: RTConnector): Boolean {
-        return (check(a.end1.part, b.end1.part)
-                && check(a.end2.part, b.end2.part)
-                && check(a.end1.port, b.end1.port)
-                && check(a.end2.port, b.end2.port))
+        return (check(a.end1, b.end1) && check(a.end2, b.end2))
+                || (check(a.end1, b.end2) && check(a.end2, b.end1))
+    }
 
-                || (check(a.end1.part, b.end2.part)
-                && check(a.end2.part, b.end1.part)
-                && check(a.end1.port, b.end2.port)
-                && check(a.end2.port, b.end1.port))
+    private fun checkConnectorEnd(a: RTConnectorEnd, b: RTConnectorEnd): Boolean {
+        return check(a.part, b.part) && check(a.port, b.port)
     }
 
     private fun checkSignal(a: RTSignal, b: RTSignal): Boolean {

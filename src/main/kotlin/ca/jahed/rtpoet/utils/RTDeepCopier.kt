@@ -34,7 +34,7 @@ class RTDeepCopier : RTCachedVisitor() {
         model.enumerations.forEach { copy.enumerations.add(visit(it) as RTEnumeration) }
         model.protocols.forEach { copy.protocols.add(visit(it) as RTProtocol) }
         model.packages.forEach { copy.packages.add(visit(it) as RTPackage) }
-        return model
+        return copy
     }
 
     override fun visitPackage(pkg: RTPackage): RTPackage {

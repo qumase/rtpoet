@@ -20,7 +20,9 @@ class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
 
         override fun build(): RTModel {
             val model = RTModel(name, RTCapsulePart(top.name, top))
-            model.capsules.add(top)
+            if (!capsules.contains(top))
+                model.capsules.add(top)
+
             model.capsules.addAll(capsules)
             model.protocols.addAll(protocols)
             model.classes.addAll(classes)
