@@ -219,7 +219,9 @@ class RTDeepCopier : RTCachedVisitor() {
     }
 
     override fun visitTrigger(trigger: RTTrigger): RTTrigger {
-        return RTTrigger(visit(trigger.signal) as RTSignal, visit(trigger.port) as RTPort)
+        val copy = RTTrigger(visit(trigger.signal) as RTSignal)
+        trigger.ports.forEach { copy.ports.add(visit(it) as RTPort) }
+        return copy
     }
 
     override fun visitArtifactProperties(props: RTArtifactProperties): RTArtifactProperties {

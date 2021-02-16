@@ -259,7 +259,7 @@ class RTEqualityHelper {
     }
 
     private fun checkTrigger(a: RTTrigger, b: RTTrigger): Boolean {
-        return check(a.port, b.port)
+        return checkList(a.ports, b.ports)
                 && check(a.signal, b.signal)
     }
 

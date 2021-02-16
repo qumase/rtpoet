@@ -265,12 +265,14 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
     }
 
     private fun checkTrigger(capsule: RTCapsule, trigger: RTTrigger) {
-        if (!capsule.ports.contains(trigger.port)) {
-            throwOrLog(trigger, "${trigger.port} not a port of $capsule", true)
-        }
+        trigger.ports.forEach {
+            if (!capsule.ports.contains(it)) {
+                throwOrLog(trigger, "$it not a port of $capsule", true)
+            }
 
-        if (!trigger.port.inputs().contains(trigger.signal)) {
-            throwOrLog(trigger, "${trigger.signal} not an input to port ${trigger.port}", true)
+            if (!it.inputs().contains(trigger.signal)) {
+                throwOrLog(trigger, "${trigger.signal} not an input to port $it", true)
+            }
         }
     }
 
