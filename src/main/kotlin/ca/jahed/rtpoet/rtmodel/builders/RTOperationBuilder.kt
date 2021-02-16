@@ -4,6 +4,7 @@ import ca.jahed.rtpoet.rtmodel.RTAction
 import ca.jahed.rtpoet.rtmodel.RTOperation
 import ca.jahed.rtpoet.rtmodel.RTParameter
 import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTOperationPropertiesBuilder
+import ca.jahed.rtpoet.rtmodel.cppproperties.RTOperationProperties
 
 interface RTOperationBuilder {
     fun parameter(param: RTParameter): RTOperationBuilder
@@ -12,6 +13,7 @@ interface RTOperationBuilder {
     fun ret(param: RTParameterBuilder): RTOperationBuilder
     fun action(action: RTAction): RTOperationBuilder
     fun action(action: RTActionBuilder): RTOperationBuilder
+    fun properties(properties: RTOperationProperties): RTOperationBuilder
     fun properties(properties: RTOperationPropertiesBuilder): RTOperationBuilder
     fun build(): RTOperation
 }

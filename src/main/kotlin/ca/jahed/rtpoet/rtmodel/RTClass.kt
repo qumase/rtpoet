@@ -4,6 +4,7 @@ import ca.jahed.rtpoet.rtmodel.builders.RTAttributeBuilder
 import ca.jahed.rtpoet.rtmodel.builders.RTClassBuilder
 import ca.jahed.rtpoet.rtmodel.builders.RTOperationBuilder
 import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTClassPropertiesBuilder
+import ca.jahed.rtpoet.rtmodel.cppproperties.RTClassProperties
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTProperties
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
@@ -16,6 +17,7 @@ open class RTClass(name: String, var superClass: RTClass? = null) : RTType(name)
         private var superClass: RTClass? = null
         private val attributes = mutableListOf<RTAttribute>()
         private val operations = mutableListOf<RTOperation>()
+        private var properties: RTClassProperties? = null
 
         private val attributeBuilders = mutableListOf<RTAttributeBuilder>()
         private val operationBuilders = mutableListOf<RTOperationBuilder>()
@@ -26,7 +28,16 @@ open class RTClass(name: String, var superClass: RTClass? = null) : RTType(name)
         override fun attribute(attr: RTAttributeBuilder) = apply { attributeBuilders.add(attr) }
         override fun operation(op: RTOperation) = apply { operations.add(op) }
         override fun operation(op: RTOperationBuilder) = apply { operationBuilders.add(op) }
-        override fun properties(properties: RTClassPropertiesBuilder) = apply { this.propertiesBuilder = properties }
+
+        override fun properties(properties: RTClassProperties) = apply {
+            this.properties = properties
+            this.propertiesBuilder = null
+        }
+
+        override fun properties(properties: RTClassPropertiesBuilder) = apply {
+            this.propertiesBuilder = properties
+            this.properties = null
+        }
 
         override fun build(): RTClass {
             val klass = RTClass(name, superClass)
@@ -34,7 +45,7 @@ open class RTClass(name: String, var superClass: RTClass? = null) : RTType(name)
             attributes.forEach { klass.attributes.add(it) }
             operationBuilders.forEach { operations.add(it.build()) }
             operations.forEach { klass.operations.add(it) }
-            klass.properties = propertiesBuilder?.build()
+            klass.properties = propertiesBuilder?.build() ?: properties
             return klass
         }
     }

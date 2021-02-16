@@ -3,6 +3,7 @@ package ca.jahed.rtpoet.rtmodel.builders
 import ca.jahed.rtpoet.rtmodel.*
 import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTCapsulePropertiesBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTStateMachineBuilder
+import ca.jahed.rtpoet.rtmodel.cppproperties.RTCapsuleProperties
 import ca.jahed.rtpoet.rtmodel.sm.RTStateMachine
 
 interface RTCapsuleBuilder {
@@ -19,6 +20,7 @@ interface RTCapsuleBuilder {
     fun connector(connector: RTConnectorBuilder): RTCapsuleBuilder
     fun statemachine(stateMachine: RTStateMachine): RTCapsuleBuilder
     fun statemachine(stateMachine: RTStateMachineBuilder): RTCapsuleBuilder
+    fun properties(properties: RTCapsuleProperties): RTCapsuleBuilder
     fun properties(properties: RTCapsulePropertiesBuilder): RTCapsuleBuilder
     fun build(): RTCapsule
 }

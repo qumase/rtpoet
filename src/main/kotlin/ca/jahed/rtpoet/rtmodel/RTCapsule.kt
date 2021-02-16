@@ -3,6 +3,7 @@ package ca.jahed.rtpoet.rtmodel
 import ca.jahed.rtpoet.rtmodel.builders.*
 import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTCapsulePropertiesBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTStateMachineBuilder
+import ca.jahed.rtpoet.rtmodel.cppproperties.RTCapsuleProperties
 import ca.jahed.rtpoet.rtmodel.sm.RTStateMachine
 
 class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, superClass) {
@@ -19,6 +20,7 @@ class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, super
         private val ports = mutableListOf<RTPort>()
         private val connectors = mutableListOf<RTConnector>()
         private var stateMachine: RTStateMachine? = null
+        private var properties: RTCapsuleProperties? = null
 
         private val attributeBuilders = mutableListOf<RTAttributeBuilder>()
         private val operationBuilders = mutableListOf<RTOperationBuilder>()
@@ -51,7 +53,15 @@ class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, super
         }
 
 
-        override fun properties(properties: RTCapsulePropertiesBuilder) = apply { this.propertiesBuilder = properties }
+        override fun properties(properties: RTCapsuleProperties) = apply {
+            this.properties = properties
+            this.propertiesBuilder = null
+        }
+
+        override fun properties(properties: RTCapsulePropertiesBuilder) = apply {
+            this.propertiesBuilder = properties
+            this.properties = null
+        }
 
         override fun build(): RTCapsule {
             val capsule = RTCapsule(this.name, this.superClass)
@@ -71,7 +81,7 @@ class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, super
             connectors.forEach { capsule.connectors.add(it) }
 
             capsule.stateMachine = stateMachineBuilder?.build(capsule) ?: stateMachine
-            capsule.properties = propertiesBuilder?.build()
+            capsule.properties = propertiesBuilder?.build() ?: properties
             return capsule
         }
     }

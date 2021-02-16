@@ -16,6 +16,7 @@ open class RTOperation(name: String) : RTElement(name) {
         private val parameters = mutableListOf<RTParameter>()
         private var ret: RTParameter? = null
         private var action: RTAction? = null
+        var properties: RTOperationProperties? = null
 
         private val parameterBuilders = mutableListOf<RTParameterBuilder>()
         private var retBuilder: RTParameterBuilder? = null
@@ -46,15 +47,21 @@ open class RTOperation(name: String) : RTElement(name) {
         }
 
 
+        override fun properties(properties: RTOperationProperties) = apply {
+            this.properties = properties
+            this.propertiesBuilder = null
+        }
+
         override fun properties(properties: RTOperationPropertiesBuilder) = apply {
             this.propertiesBuilder = properties
+            this.properties = null
         }
 
         override fun build(): RTOperation {
             val op = RTOperation(this.name)
             op.ret = retBuilder?.build() ?: ret
             op.action = actionBuilder?.build() ?: action ?: RTAction()
-            op.properties = propertiesBuilder?.build()
+            op.properties = propertiesBuilder?.build() ?: properties
             parameterBuilders.forEach { parameters.add(it.build()) }
             parameters.forEach { op.parameters.add(it) }
             return op
