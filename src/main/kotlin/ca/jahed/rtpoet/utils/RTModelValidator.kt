@@ -2,8 +2,8 @@ package ca.jahed.rtpoet.utils
 
 import ca.jahed.rtpoet.exceptions.ValidationException
 import ca.jahed.rtpoet.rtmodel.*
-import ca.jahed.rtpoet.rtmodel.rts.RTSystemClass
-import ca.jahed.rtpoet.rtmodel.rts.RTSystemProtocol
+import ca.jahed.rtpoet.rtmodel.rts.classes.RTSystemClass
+import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
 import java.util.*
 

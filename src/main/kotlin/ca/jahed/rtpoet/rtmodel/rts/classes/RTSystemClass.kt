@@ -1,4 +1,4 @@
-package ca.jahed.rtpoet.rtmodel.rts
+package ca.jahed.rtpoet.rtmodel.rts.classes
 
 import ca.jahed.rtpoet.rtmodel.RTClass
 

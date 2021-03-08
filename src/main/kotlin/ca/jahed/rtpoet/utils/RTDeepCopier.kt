@@ -2,12 +2,12 @@ package ca.jahed.rtpoet.utils
 
 import ca.jahed.rtpoet.rtmodel.*
 import ca.jahed.rtpoet.rtmodel.cppproperties.*
-import ca.jahed.rtpoet.rtmodel.rts.RTSystemClass
-import ca.jahed.rtpoet.rtmodel.rts.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.rts.RTSystemSignal
+import ca.jahed.rtpoet.rtmodel.rts.classes.RTSystemClass
+import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
-import ca.jahed.rtpoet.rtmodel.types.RTPrimitiveType
 import ca.jahed.rtpoet.rtmodel.types.RTType
+import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
 class RTDeepCopier : RTCachedVisitor() {

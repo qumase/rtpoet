@@ -1,7 +1,9 @@
 package ca.jahed.rtpoet.rtmodel.rts
 
-import ca.jahed.rtpoet.rtmodel.types.RTPrimitiveType
+import ca.jahed.rtpoet.rtmodel.rts.classes.RTSystemClass
+import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.types.RTType
+import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
 
 interface RTLibrary {
     fun getProtocol(protocol: RTSystemProtocol): Any
