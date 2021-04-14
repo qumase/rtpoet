@@ -13,6 +13,10 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.jgrapht", "jgrapht", "1.4.0")
+    implementation("org.jgrapht", "jgrapht-core", "1.4.0")
+    implementation("org.jgrapht", "jgrapht-ext", "1.4.0")
+
     testImplementation("junit", "junit", "4.12")
 }
 

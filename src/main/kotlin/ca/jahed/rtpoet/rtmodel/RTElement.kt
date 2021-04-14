@@ -2,8 +2,9 @@ package ca.jahed.rtpoet.rtmodel
 
 import NameUtils
 import ca.jahed.rtpoet.utils.RTEqualityHelper
+import java.io.Serializable
 
-abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Comparable<RTElement> {
+abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Comparable<RTElement>, Serializable {
     override fun compareTo(other: RTElement): Int {
         if (name == other.name)
             return 0
