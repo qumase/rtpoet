@@ -62,12 +62,15 @@ object RTVisualizer {
 
                     if (obj is List<*>) {
                         for ((index, item) in obj.withIndex()) {
+                            if (item == null || item.javaClass in ignore)
+                                continue
+
                             graph.addVertex(item)
                             graph.addEdge(obj, item,
                                 LabeledEdge("${field.name}[$index]"))
 
                             if (!visited.contains(item)) {
-                                visited.add(item!!)
+                                visited.add(item)
                                 stack.add(item)
                             }
                         }
