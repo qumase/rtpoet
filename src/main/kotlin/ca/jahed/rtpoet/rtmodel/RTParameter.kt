@@ -5,7 +5,7 @@ import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTParameterPropertiesBuild
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTParameterProperties
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
-class RTParameter(name: String, type: RTType) : RTAttribute(name, type) {
+open class RTParameter(name: String, type: RTType) : RTAttribute(name, type) {
     constructor(type: RTType) : this("", type)
 
     private class Builder(private val name: String, private val type: RTType) : RTParameterBuilder {

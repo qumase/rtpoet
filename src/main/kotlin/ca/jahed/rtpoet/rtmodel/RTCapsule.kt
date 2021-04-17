@@ -6,7 +6,7 @@ import ca.jahed.rtpoet.rtmodel.builders.sm.RTStateMachineBuilder
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTCapsuleProperties
 import ca.jahed.rtpoet.rtmodel.sm.RTStateMachine
 
-class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, superClass) {
+open class RTCapsule(name: String, superClass: RTClass? = null) : RTClass(name, superClass) {
     val parts = mutableListOf<RTCapsulePart>()
     val ports = mutableListOf<RTPort>()
     val connectors = mutableListOf<RTConnector>()

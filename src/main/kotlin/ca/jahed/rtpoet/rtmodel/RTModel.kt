@@ -2,7 +2,7 @@ package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTModelBuilder
 
-class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
+open class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
     private class Builder(private val name: String, private val top: RTCapsule) : RTModelBuilder {
         private val capsules = mutableListOf<RTCapsule>()
         private val protocols = mutableListOf<RTProtocol>()

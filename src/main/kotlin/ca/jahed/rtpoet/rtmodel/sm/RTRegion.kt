@@ -7,7 +7,7 @@ import ca.jahed.rtpoet.rtmodel.builders.sm.RTGenericStateBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTRegionBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTransitionBuilder
 
-class RTRegion : RTElement() {
+open class RTRegion : RTElement() {
     val states = mutableListOf<RTGenericState>()
     val transitions = mutableListOf<RTTransition>()
 

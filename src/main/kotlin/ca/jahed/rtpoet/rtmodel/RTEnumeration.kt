@@ -5,7 +5,7 @@ import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTEnumerationPropertiesBui
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTEnumerationProperties
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
-class RTEnumeration(name: String) : RTType(name) {
+open class RTEnumeration(name: String) : RTType(name) {
     val literals = mutableListOf<String>()
     var properties: RTEnumerationProperties? = null
 

@@ -2,7 +2,7 @@ package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTActionBuilder
 
-class RTAction(var body: String = String(), var language: String = "C++") : RTElement() {
+open class RTAction(var body: String = String(), var language: String = "C++") : RTElement() {
     private class Builder(private val body: String? = null) : RTActionBuilder {
         var language: String = "C++"
 

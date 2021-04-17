@@ -4,7 +4,7 @@ import ca.jahed.rtpoet.exceptions.BuildException
 import ca.jahed.rtpoet.rtmodel.builders.RTConnectorBuilder
 import ca.jahed.rtpoet.rtmodel.builders.RTConnectorEndBuilder
 
-class RTConnector(
+open class RTConnector(
     var end1: RTConnectorEnd,
     var end2: RTConnectorEnd,
 ) : RTElement() {

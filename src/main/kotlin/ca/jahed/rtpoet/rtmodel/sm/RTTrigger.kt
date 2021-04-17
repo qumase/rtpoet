@@ -6,7 +6,7 @@ import ca.jahed.rtpoet.rtmodel.RTPort
 import ca.jahed.rtpoet.rtmodel.RTSignal
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTriggerBuilder
 
-class RTTrigger(var signal: RTSignal, port: RTPort? = null) : RTElement() {
+open class RTTrigger(var signal: RTSignal, port: RTPort? = null) : RTElement() {
     val ports = mutableListOf<RTPort>()
 
     init {

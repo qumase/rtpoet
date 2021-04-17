@@ -4,7 +4,7 @@ import NameUtils
 import ca.jahed.rtpoet.exceptions.BuildException
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTPseudoStateBuilder
 
-class RTPseudoState(name: String, var kind: Kind) : RTGenericState(name) {
+open class RTPseudoState(name: String, var kind: Kind) : RTGenericState(name) {
 
     enum class Kind {
         INITIAL, HISTORY, JOIN, JUNCTION, CHOICE, ENTRY_POINT, EXIT_POINT

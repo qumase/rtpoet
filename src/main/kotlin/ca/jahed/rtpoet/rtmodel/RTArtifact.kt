@@ -5,7 +5,7 @@ import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTArtifactPropertiesBuilde
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTArtifactProperties
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
-class RTArtifact(name: String, var fileName: String) : RTType(name) {
+open class RTArtifact(name: String, var fileName: String) : RTType(name) {
     var properties: RTArtifactProperties? = null
 
     private class Builder(private val name: String) : RTArtifactBuilder {

@@ -2,7 +2,7 @@ package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTCapsulePartBuilder
 
-class RTCapsulePart(name: String, var capsule: RTCapsule) : RTAttribute(name, capsule) {
+open class RTCapsulePart(name: String, var capsule: RTCapsule) : RTAttribute(name, capsule) {
     var optional = false
     var plugin = false
 

@@ -3,7 +3,7 @@ package ca.jahed.rtpoet.rtmodel
 import ca.jahed.rtpoet.exceptions.BuildException
 import ca.jahed.rtpoet.rtmodel.builders.RTConnectorEndBuilder
 
-class RTConnectorEnd(var port: RTPort, var part: RTCapsulePart? = null) : RTElement() {
+open class RTConnectorEnd(var port: RTPort, var part: RTCapsulePart? = null) : RTElement() {
 
     private class Builder private constructor() : RTConnectorEndBuilder {
         private var port: RTPort? = null

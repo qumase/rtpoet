@@ -6,7 +6,7 @@ import ca.jahed.rtpoet.rtmodel.builders.sm.RTCompositeStateBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTGenericStateBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTransitionBuilder
 
-class RTCompositeState private constructor(
+open class RTCompositeState private constructor(
     name: String,
     private val region: RTRegion,
 ) : IRTRegion, RTState(name) {

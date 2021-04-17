@@ -6,7 +6,7 @@ import ca.jahed.rtpoet.rtmodel.RTCapsule
 import ca.jahed.rtpoet.rtmodel.RTElement
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTransitionBuilder
 
-class RTTransition(
+open class RTTransition(
     var source: RTGenericState,
     var target: RTGenericState,
 ) : RTElement() {
