@@ -4,6 +4,7 @@ import ca.jahed.rtpoet.exceptions.BuildException
 import ca.jahed.rtpoet.rtmodel.RTAction
 import ca.jahed.rtpoet.rtmodel.RTCapsule
 import ca.jahed.rtpoet.rtmodel.RTElement
+import ca.jahed.rtpoet.rtmodel.builders.RTActionBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTransitionBuilder
 
 open class RTTransition(
@@ -22,23 +23,23 @@ open class RTTransition(
         protected var guard: RTAction? = null
         protected var action: RTAction? = null
 
-        protected var guardStr: String? = null
-        protected var actionStr: String? = null
+        protected var guardBuilder: RTActionBuilder? = null
+        protected var actionBuilder: RTActionBuilder? = null
 
         override fun guard(guard: RTAction) = apply {
             this.guard = guard
         }
 
-        override fun guard(guard: String) = apply {
-            this.guardStr = guard
+        override fun guard(guard: RTActionBuilder) = apply {
+            this.guardBuilder = guard
         }
 
         override fun action(action: RTAction) = apply {
             this.action = action
         }
 
-        override fun action(action: String) = apply {
-            this.actionStr = action
+        override fun action(action: RTActionBuilder) = apply {
+            this.actionBuilder = action
         }
 
         override fun trigger(trigger: RTTrigger): RTTransitionBuilder {
@@ -66,8 +67,8 @@ open class RTTransition(
 
                 override fun build(): RTTransition {
                     val transition = RTTransition(super.source!!, super.target!!)
-                    transition.guard = guard ?: if (guardStr != null) RTAction(guardStr!!) else null
-                    transition.action = action ?: if (actionStr != null) RTAction(actionStr!!) else null
+                    transition.guard = guardBuilder?.build() ?: guard ?: RTAction()
+                    transition.action = actionBuilder?.build() ?: action ?: RTAction()
                     triggers.forEach { transition.triggers.add(it) }
                     return transition
                 }
@@ -94,8 +95,8 @@ open class RTTransition(
 
                     val transition = RTTransition(this.source!!, this.target!!)
                     triggers.forEach { transition.triggers.add(it) }
-                    transition.guard = guard ?: if (guardStr != null) RTAction(guardStr!!) else null
-                    transition.action = action ?: if (actionStr != null) RTAction(actionStr!!) else null
+                    transition.guard = guardBuilder?.build() ?: guard ?: RTAction()
+                    transition.action = actionBuilder?.build() ?: action ?: RTAction()
                     return transition
                 }
 
