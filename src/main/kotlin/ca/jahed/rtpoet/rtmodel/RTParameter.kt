@@ -8,7 +8,7 @@ import ca.jahed.rtpoet.rtmodel.types.RTType
 open class RTParameter(name: String, type: RTType) : RTAttribute(name, type) {
     constructor(type: RTType) : this("", type)
 
-    private class Builder(private val name: String?, private val type: RTType) : RTParameterBuilder {
+    private class Builder(private val name: String, private val type: RTType) : RTParameterBuilder {
         private var replication: Int = 1
         private var properties: RTParameterProperties? = null
 
@@ -27,7 +27,7 @@ open class RTParameter(name: String, type: RTType) : RTAttribute(name, type) {
         }
 
         override fun build(): RTParameter {
-            val parameter = if (name != null) RTParameter(this.name, this.type) else RTParameter(this.type)
+            val parameter = RTParameter(this.name, this.type)
             parameter.replication = replication
             parameter.properties = propertiesBuilder?.build() ?: properties
             return parameter
@@ -38,10 +38,6 @@ open class RTParameter(name: String, type: RTType) : RTAttribute(name, type) {
         @JvmStatic
         fun builder(name: String, type: RTType): RTParameterBuilder {
             return Builder(name, type)
-        }
-
-        fun builder(type: RTType): RTParameterBuilder {
-            return Builder(null, type)
         }
     }
 }
