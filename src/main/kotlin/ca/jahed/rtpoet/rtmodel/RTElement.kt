@@ -12,6 +12,8 @@ abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Co
     }
 
     override fun equals(other: Any?): Boolean {
+        if (this === other)
+            return true
         if (other !is RTElement)
             return false
         return RTEqualityHelper.isEqual(this, other)
