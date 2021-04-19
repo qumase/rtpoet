@@ -10,10 +10,13 @@ import ca.jahed.rtpoet.rtmodel.types.RTType
 import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
-class RTDeepCopier : RTCachedVisitor() {
+class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisitor() {
     private val original = mutableMapOf<RTElement, RTElement>()
 
     override fun visit(element: RTElement): Any {
+        if (element::class.java in ignore)
+            return element
+
         val copy = super.visit(element)
         original[copy as RTElement] = element
         return copy
