@@ -7,7 +7,7 @@ import ca.jahed.rtpoet.rtmodel.cppproperties.RTProperties
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
 open class RTAttribute(name: String, var type: RTType, var value: String? = null) : RTElement(name) {
-    var replication = 0
+    var replication = 1
     var visibility = VisibilityKind.PROTECTED
     var properties: RTProperties? = null
 
