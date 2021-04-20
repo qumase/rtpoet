@@ -23,23 +23,4 @@ class RTTypeProperties(
             return Builder(name)
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTTypeProperties
-
-        if (name != other.name) return false
-        if (definitionFile != other.definitionFile) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = name.hashCode()
-        result = 31 * result + (definitionFile?.hashCode() ?: 0)
-        return result
-    }
 }

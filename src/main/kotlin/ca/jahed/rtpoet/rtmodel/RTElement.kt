@@ -1,7 +1,6 @@
 package ca.jahed.rtpoet.rtmodel
 
 import NameUtils
-import ca.jahed.rtpoet.utils.RTEqualityHelper
 import java.io.Serializable
 
 abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Comparable<RTElement>, Serializable {
@@ -9,14 +8,6 @@ abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Co
         if (name == other.name)
             return 0
         return javaClass.simpleName.compareTo(other.javaClass.simpleName)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other)
-            return true
-        if (other !is RTElement)
-            return false
-        return RTEqualityHelper.isEqual(this, other)
     }
 
     override fun toString(): String {

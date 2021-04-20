@@ -35,29 +35,4 @@ class RTParameterProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTParameterProperties
-
-        if (type != other.type) return false
-        if (pointsToConst != other.pointsToConst) return false
-        if (pointsToVolatile != other.pointsToVolatile) return false
-        if (pointsToType != other.pointsToType) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = type?.hashCode() ?: 0
-        result = 31 * result + pointsToConst.hashCode()
-        result = 31 * result + pointsToVolatile.hashCode()
-        result = 31 * result + pointsToType.hashCode()
-        return result
-    }
-
-
 }

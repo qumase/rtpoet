@@ -58,37 +58,4 @@ class RTAttributeProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTAttributeProperties
-
-        if (initialization != other.initialization) return false
-        if (kind != other.kind) return false
-        if (size != other.size) return false
-        if (type != other.type) return false
-        if (pointsToConstType != other.pointsToConstType) return false
-        if (pointsToVolatileType != other.pointsToVolatileType) return false
-        if (pointsToType != other.pointsToType) return false
-        if (isVolatile != other.isVolatile) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = initialization?.hashCode() ?: 0
-        result = 31 * result + (kind?.hashCode() ?: 0)
-        result = 31 * result + (size?.hashCode() ?: 0)
-        result = 31 * result + (type?.hashCode() ?: 0)
-        result = 31 * result + pointsToConstType.hashCode()
-        result = 31 * result + pointsToVolatileType.hashCode()
-        result = 31 * result + pointsToType.hashCode()
-        result = 31 * result + isVolatile.hashCode()
-        return result
-    }
-
-
 }

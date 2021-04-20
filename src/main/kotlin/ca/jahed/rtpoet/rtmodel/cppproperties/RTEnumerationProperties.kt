@@ -43,31 +43,4 @@ class RTEnumerationProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTEnumerationProperties
-
-        if (headerPreface != other.headerPreface) return false
-        if (headerEnding != other.headerEnding) return false
-        if (implementationPreface != other.implementationPreface) return false
-        if (implementationEnding != other.implementationEnding) return false
-        if (generate != other.generate) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = headerPreface?.hashCode() ?: 0
-        result = 31 * result + (headerEnding?.hashCode() ?: 0)
-        result = 31 * result + (implementationPreface?.hashCode() ?: 0)
-        result = 31 * result + (implementationEnding?.hashCode() ?: 0)
-        result = 31 * result + generate.hashCode()
-        return result
-    }
-
-
 }

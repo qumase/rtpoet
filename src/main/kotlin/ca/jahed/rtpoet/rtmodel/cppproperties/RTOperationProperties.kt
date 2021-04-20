@@ -39,29 +39,4 @@ class RTOperationProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTOperationProperties
-
-        if (kind != other.kind) return false
-        if (generateDefinition != other.generateDefinition) return false
-        if (inline != other.inline) return false
-        if (polymorphic != other.polymorphic) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = kind?.hashCode() ?: 0
-        result = 31 * result + generateDefinition.hashCode()
-        result = 31 * result + inline.hashCode()
-        result = 31 * result + polymorphic.hashCode()
-        return result
-    }
-
-
 }

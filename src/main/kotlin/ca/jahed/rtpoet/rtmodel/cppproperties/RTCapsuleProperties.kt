@@ -66,39 +66,4 @@ class RTCapsuleProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTCapsuleProperties
-
-        if (headerPreface != other.headerPreface) return false
-        if (headerEnding != other.headerEnding) return false
-        if (implementationPreface != other.implementationPreface) return false
-        if (implementationEnding != other.implementationEnding) return false
-        if (publicDeclarations != other.publicDeclarations) return false
-        if (privateDeclarations != other.privateDeclarations) return false
-        if (protectedDeclarations != other.protectedDeclarations) return false
-        if (generateHeader != other.generateHeader) return false
-        if (generateImplementation != other.generateImplementation) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = headerPreface?.hashCode() ?: 0
-        result = 31 * result + (headerEnding?.hashCode() ?: 0)
-        result = 31 * result + (implementationPreface?.hashCode() ?: 0)
-        result = 31 * result + (implementationEnding?.hashCode() ?: 0)
-        result = 31 * result + (publicDeclarations?.hashCode() ?: 0)
-        result = 31 * result + (privateDeclarations?.hashCode() ?: 0)
-        result = 31 * result + (protectedDeclarations?.hashCode() ?: 0)
-        result = 31 * result + generateHeader.hashCode()
-        result = 31 * result + generateImplementation.hashCode()
-        return result
-    }
-
-
 }

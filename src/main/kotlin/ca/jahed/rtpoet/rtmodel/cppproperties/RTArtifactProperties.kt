@@ -24,23 +24,4 @@ class RTArtifactProperties(
             return Builder()
         }
     }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-        if (!super.equals(other)) return false
-
-        other as RTArtifactProperties
-
-        if (includeFile != other.includeFile) return false
-        if (sourceFile != other.sourceFile) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = includeFile?.hashCode() ?: 0
-        result = 31 * result + (sourceFile?.hashCode() ?: 0)
-        return result
-    }
 }
