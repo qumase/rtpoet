@@ -164,8 +164,8 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     override fun visitOperation(operation: RTOperation): RTOperation {
         val copy = RTOperation(operation.name)
         operation.parameters.forEach { copy.parameters.add(visit(it) as RTParameter) }
-        operation.ret = if (operation.ret != null) visit(operation.ret!!) as RTParameter else null
-        operation.action = copy.action
+        copy.ret = if (operation.ret != null) visit(operation.ret!!) as RTParameter else null
+        copy.action = if (operation.action != null) visit(operation.action!!) as RTAction else null
         copy.properties =
             if (operation.properties != null)
                 visit(operation.properties!!) as RTOperationProperties
@@ -195,8 +195,8 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
 
     override fun visitCompositeState(state: RTCompositeState): RTCompositeState {
         val copy = RTCompositeState(state.name)
-        copy.entryAction = state.entryAction
-        copy.exitAction = state.exitAction
+        copy.entryAction = if (state.entryAction != null) visitAction(state.entryAction!!) else null
+        copy.exitAction = if (state.exitAction != null) visitAction(state.exitAction!!) else null
         state.states().forEach { copy.states().add(visit(it) as RTGenericState) }
         state.transitions().forEach { copy.transitions().add(visit(it) as RTTransition) }
         return copy
@@ -208,15 +208,15 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
 
     override fun visitState(state: RTState): RTState {
         val copy = RTState(state.name)
-        copy.entryAction = state.entryAction
-        copy.exitAction = state.exitAction
+        copy.entryAction = if (state.entryAction != null) visitAction(state.entryAction!!) else null
+        copy.exitAction = if (state.exitAction != null) visitAction(state.exitAction!!) else null
         return copy
     }
 
     override fun visitTransition(transition: RTTransition): RTTransition {
         val copy = RTTransition(visit(transition.source) as RTGenericState, visit(transition.target) as RTGenericState)
-        copy.guard = transition.guard
-        copy.action = transition.action
+        copy.guard = if (transition.guard != null) visitAction(transition.guard!!) else null
+        copy.action = if (transition.action != null) visitAction(transition.action!!) else null
         transition.triggers.forEach { copy.triggers.add(visit(it) as RTTrigger) }
         return copy
     }
