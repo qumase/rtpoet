@@ -62,8 +62,8 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
 
         override fun external() = apply { behaviour().wired().service().publicVisibility() }
         override fun internal() = apply { behaviour().wired().protectedVisibility() }
-        override fun sap() = apply { behaviour().autoLockedRegistration().protectedVisibility() }
-        override fun spp() = apply { behaviour().publish().autoRegistration().publicVisibility() }
+        override fun sap() = apply { behaviour().autoRegistration().protectedVisibility() }
+        override fun spp() = apply { behaviour().publish().service().autoRegistration().publicVisibility() }
         override fun relay() = apply { service().wired().publicVisibility() }
 
         override fun replication(replication: Int) = apply { this.replication = replication }
@@ -92,6 +92,7 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
             port.publish = publish
             port.registrationType = registrationType
             port.registrationOverride = registrationOverride
+            port.visibility = visibility
             return port
         }
     }
