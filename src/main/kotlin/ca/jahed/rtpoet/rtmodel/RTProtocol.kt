@@ -17,7 +17,7 @@ open class RTProtocol(name: String, var anySignal: RTSignal = RTSignal.any()) : 
     }
 
     fun outputs(): List<RTSignal> {
-        val output = mutableListOf<RTSignal>()
+        val output = mutableListOf<RTSignal>(anySignal)
         output.addAll(outputSignals)
         output.addAll(inOutSignals)
         return output
