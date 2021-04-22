@@ -1,7 +1,7 @@
 package ca.jahed.rtpoet.utils
 
 import ca.jahed.rtpoet.rtmodel.*
-import ca.jahed.rtpoet.rtmodel.cppproperties.RTProperties
+import ca.jahed.rtpoet.rtmodel.cppproperties.*
 import ca.jahed.rtpoet.rtmodel.rts.classes.RTSystemClass
 import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
@@ -71,9 +71,16 @@ class RTEqualityHelper {
                 is RTTransition -> checkTransition(a, b as RTTransition)
                 is RTTrigger -> checkTrigger(a, b as RTTrigger)
 
-                is RTProperties -> a == b
+                is RTArtifactProperties -> checkArtifactProperties(a, b as RTArtifactProperties)
+                is RTAttributeProperties -> checkAttributeProperties(a, b as RTAttributeProperties)
+                is RTCapsuleProperties -> checkCapsuleProperties(a, b as RTCapsuleProperties)
+                is RTClassProperties -> checkClassProperties(a, b as RTClassProperties)
+                is RTEnumerationProperties -> checkEnumerationProperties(a, b as RTEnumerationProperties)
+                is RTOperationProperties -> checkOperationProperties(a, b as RTOperationProperties)
+                is RTParameterProperties -> checkParameterProperties(a, b as RTParameterProperties)
+                is RTTypeProperties -> checkTypeProperties(a, b as RTTypeProperties)
 
-                else -> throw RuntimeException("Unexpected element type ${a.javaClass.simpleName}")
+                else -> a === b
             }
         })
     }
@@ -263,5 +270,92 @@ class RTEqualityHelper {
                 && check(a.signal, b.signal)
     }
 
+    private fun checkArtifactProperties(a: RTArtifactProperties, b: RTArtifactProperties): Boolean {
+        if (a.includeFile != b.includeFile) return false
+        if (a.sourceFile != b.sourceFile) return false
+        return true
+    }
+
+    private fun checkAttributeProperties(a: RTAttributeProperties, b: RTAttributeProperties): Boolean {
+        if (a.initialization != b.initialization) return false
+        if (a.kind != b.kind) return false
+        if (a.size != b.size) return false
+        if (a.type != b.type) return false
+        if (a.pointsToConstType != b.pointsToConstType) return false
+        if (a.pointsToVolatileType != b.pointsToVolatileType) return false
+        if (a.pointsToType != b.pointsToType) return false
+        if (a.isVolatile != b.isVolatile) return false
+        return true
+    }
+
+    private fun checkCapsuleProperties(a: RTCapsuleProperties, b: RTCapsuleProperties): Boolean {
+        if (a.headerPreface != b.headerPreface) return false
+        if (a.headerEnding != b.headerEnding) return false
+        if (a.implementationPreface != b.implementationPreface) return false
+        if (a.implementationEnding != b.implementationEnding) return false
+        if (a.publicDeclarations != b.publicDeclarations) return false
+        if (a.privateDeclarations != b.privateDeclarations) return false
+        if (a.protectedDeclarations != b.protectedDeclarations) return false
+        if (a.generateHeader != b.generateHeader) return false
+        if (a.generateImplementation != b.generateImplementation) return false
+
+        return true
+    }
+
+    private fun checkClassProperties(a: RTClassProperties, b: RTClassProperties): Boolean {
+        if (a.kind != b.kind) return false
+        if (a.headerPreface != b.headerPreface) return false
+        if (a.headerEnding != b.headerEnding) return false
+        if (a.implementationPreface != b.implementationPreface) return false
+        if (a.implementationEnding != b.implementationEnding) return false
+        if (a.publicDeclarations != b.publicDeclarations) return false
+        if (a.privateDeclarations != b.privateDeclarations) return false
+        if (a.protectedDeclarations != b.protectedDeclarations) return false
+        if (a.implementationType != b.implementationType) return false
+        if (a.generate != b.generate) return false
+        if (a.generateHeader != b.generateHeader) return false
+        if (a.generateImplementation != b.generateImplementation) return false
+        if (a.generateStateMachine != b.generateStateMachine) return false
+        if (a.generateAssignmentOperator != b.generateAssignmentOperator) return false
+        if (a.generateEqualityOperator != b.generateEqualityOperator) return false
+        if (a.generateInequalityOperator != b.generateInequalityOperator) return false
+        if (a.generateInsertionOperator != b.generateInsertionOperator) return false
+        if (a.generateExtractionOperator != b.generateExtractionOperator) return false
+        if (a.generateCopyConstructor != b.generateCopyConstructor) return false
+        if (a.generateDefaultConstructor != b.generateDefaultConstructor) return false
+        if (a.generateDestructor != b.generateDestructor) return false
+        return true
+    }
+
+    private fun checkEnumerationProperties(a: RTEnumerationProperties, b: RTEnumerationProperties): Boolean {
+        if (a.headerPreface != b.headerPreface) return false
+        if (a.headerEnding != b.headerEnding) return false
+        if (a.implementationPreface != b.implementationPreface) return false
+        if (a.implementationEnding != b.implementationEnding) return false
+        if (a.generate != b.generate) return false
+        return true
+    }
+
+    private fun checkOperationProperties(a: RTOperationProperties, b: RTOperationProperties): Boolean {
+        if (a.kind != b.kind) return false
+        if (a.generateDefinition != b.generateDefinition) return false
+        if (a.inline != b.inline) return false
+        if (a.polymorphic != b.polymorphic) return false
+        return true
+    }
+
+    private fun checkParameterProperties(a: RTParameterProperties, b: RTParameterProperties): Boolean {
+        if (a.type != b.type) return false
+        if (a.pointsToConst != b.pointsToConst) return false
+        if (a.pointsToVolatile != b.pointsToVolatile) return false
+        if (a.pointsToType != b.pointsToType) return false
+        return true
+    }
+
+    private fun checkTypeProperties(a: RTTypeProperties, b: RTTypeProperties): Boolean {
+        if (a.name != b.name) return false
+        if (a.definitionFile != b.definitionFile) return false
+        return true
+    }
 
 }
