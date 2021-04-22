@@ -2,12 +2,18 @@ package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTProtocolBuilder
 import ca.jahed.rtpoet.rtmodel.builders.RTSignalBuilder
+import ca.jahed.rtpoet.rtmodel.rts.RTSystemSignal
 import ca.jahed.rtpoet.rtmodel.types.RTType
 
 open class RTProtocol(name: String, var anySignal: RTSignal = RTSignal.any()) : RTType(name) {
     val inputSignals = mutableListOf<RTSignal>()
     val outputSignals = mutableListOf<RTSignal>()
     val inOutSignals = mutableListOf<RTSignal>()
+
+    init {
+        inOutSignals.add(RTSystemSignal.rtBound())
+        inOutSignals.add(RTSystemSignal.rtUnbound())
+    }
 
     fun inputs(): List<RTSignal> {
         val inputs = mutableListOf(anySignal)
@@ -17,7 +23,7 @@ open class RTProtocol(name: String, var anySignal: RTSignal = RTSignal.any()) : 
     }
 
     fun outputs(): List<RTSignal> {
-        val output = mutableListOf<RTSignal>(anySignal)
+        val output = mutableListOf(anySignal)
         output.addAll(outputSignals)
         output.addAll(inOutSignals)
         return output
