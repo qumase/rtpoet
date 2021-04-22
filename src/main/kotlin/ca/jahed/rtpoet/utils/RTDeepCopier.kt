@@ -81,7 +81,9 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
         val copy = RTProtocol(protocol.name)
         protocol.inputSignals.forEach { copy.inputSignals.add(visit(it) as RTSignal) }
         protocol.outputSignals.forEach { copy.outputSignals.add(visit(it) as RTSignal) }
-        protocol.inOutSignals.forEach { copy.inOutSignals.add(visit(it) as RTSignal) }
+        protocol.inOutSignals
+            .filter { it !== RTSystemSignal.rtBound() && it !== RTSystemSignal.rtUnbound() }
+            .forEach { copy.inOutSignals.add(visit(it) as RTSignal) }
         return copy
     }
 
