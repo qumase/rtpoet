@@ -291,10 +291,7 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
     ) : Comparable<ValidationMessage> {
 
         override fun compareTo(other: ValidationMessage): Int {
-            if (error == other.error)
-                return element.compareTo(other.element)
-
-            return if (error) 0 else 1
+            return if (error) -1 else 1
         }
 
         override fun toString(): String {
