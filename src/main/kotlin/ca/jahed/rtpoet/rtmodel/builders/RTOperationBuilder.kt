@@ -7,6 +7,9 @@ import ca.jahed.rtpoet.rtmodel.builders.cppproperties.RTOperationPropertiesBuild
 import ca.jahed.rtpoet.rtmodel.cppproperties.RTOperationProperties
 
 interface RTOperationBuilder {
+    fun publicVisibility(): RTOperationBuilder
+    fun privateVisibility(): RTOperationBuilder
+    fun protectedVisibility(): RTOperationBuilder
     fun parameter(param: RTParameter): RTOperationBuilder
     fun parameter(param: RTParameterBuilder): RTOperationBuilder
     fun ret(param: RTParameter): RTOperationBuilder

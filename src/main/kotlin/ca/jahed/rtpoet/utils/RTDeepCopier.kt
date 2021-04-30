@@ -166,6 +166,7 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     override fun visitOperation(operation: RTOperation): RTOperation {
         val copy = RTOperation(operation.name)
         operation.parameters.forEach { copy.parameters.add(visit(it) as RTParameter) }
+        copy.visibility = operation.visibility
         copy.ret = if (operation.ret != null) visit(operation.ret!!) as RTParameter else null
         copy.action = if (operation.action != null) visit(operation.action!!) as RTAction else null
         copy.properties =

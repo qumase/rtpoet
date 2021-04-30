@@ -12,6 +12,7 @@ open class RTCapsulePart(name: String, var capsule: RTCapsule) : RTAttribute(nam
         private var plugin = false
 
         override fun replication(replication: Int) = apply { this.replication = replication }
+        override fun fixed() = apply { this.optional = false; this.plugin = false }
         override fun optional() = apply { this.optional = true }
         override fun plugin() = apply { this.plugin = true }
 

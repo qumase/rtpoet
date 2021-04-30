@@ -219,7 +219,8 @@ class RTEqualityHelper {
     }
 
     private fun checkOperation(a: RTOperation, b: RTOperation): Boolean {
-        return check(a.ret, b.ret)
+        return a.visibility == b.visibility
+                && check(a.ret, b.ret)
                 && check(a.action, b.action)
                 && checkOrderedList(a.parameters, b.parameters)
     }
