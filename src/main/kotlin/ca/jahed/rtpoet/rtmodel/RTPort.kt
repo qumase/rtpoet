@@ -17,23 +17,23 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
     }
 
     fun isExternal(): Boolean {
-        return wired && service && behaviour && visibility == VisibilityKind.PUBLIC
+        return wired && service && behaviour && visibility == RTVisibilityKind.PUBLIC
     }
 
     fun isInternal(): Boolean {
-        return wired && service && behaviour && visibility != VisibilityKind.PUBLIC
+        return wired && service && behaviour && visibility != RTVisibilityKind.PUBLIC
     }
 
     fun isSAP(): Boolean {
-        return !wired && !service && !publish && behaviour && visibility != VisibilityKind.PUBLIC
+        return !wired && !service && !publish && behaviour && visibility != RTVisibilityKind.PUBLIC
     }
 
     fun isSPP(): Boolean {
-        return !wired && !service && behaviour && publish && visibility == VisibilityKind.PUBLIC
+        return !wired && !service && behaviour && publish && visibility == RTVisibilityKind.PUBLIC
     }
 
     fun isRelay(): Boolean {
-        return !behaviour && !publish && service && wired && visibility == VisibilityKind.PUBLIC
+        return !behaviour && !publish && service && wired && visibility == RTVisibilityKind.PUBLIC
     }
 
     fun inputs(): List<RTSignal> {
@@ -58,7 +58,7 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
         private var publish = false
         private var registrationType = RegistrationType.AUTOMATIC
         private var registrationOverride = String()
-        private var visibility = VisibilityKind.PROTECTED
+        private var visibility = RTVisibilityKind.PROTECTED
 
         override fun external() = apply { behaviour().wired().service().publicVisibility() }
         override fun internal() = apply { behaviour().wired().protectedVisibility() }
@@ -77,9 +77,9 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
         override fun autoLockedRegistration() = apply { this.registrationType = RegistrationType.AUTOMATIC_LOCKED }
         override fun appRegistration() = apply { this.registrationType = RegistrationType.APPLICATION }
         override fun registrationOverride(override: String) = apply { this.registrationOverride = override }
-        override fun publicVisibility() = apply { visibility = VisibilityKind.PUBLIC }
-        override fun privateVisibility() = apply { visibility = VisibilityKind.PRIVATE }
-        override fun protectedVisibility() = apply { visibility = VisibilityKind.PROTECTED }
+        override fun publicVisibility() = apply { visibility = RTVisibilityKind.PUBLIC }
+        override fun privateVisibility() = apply { visibility = RTVisibilityKind.PRIVATE }
+        override fun protectedVisibility() = apply { visibility = RTVisibilityKind.PROTECTED }
 
         override fun build(): RTPort {
             val port = RTPort(this.name, this.protocol)
