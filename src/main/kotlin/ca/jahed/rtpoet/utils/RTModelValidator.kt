@@ -37,8 +37,8 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
     }
 
     private fun checkModel() {
-        if (!hasCapsule(model, model.top.capsule)) {
-            throwOrLog(model, "capsule ${model.top.capsule} not found in model $model", true)
+        if (model.top != null && !hasCapsule(model, model.top!!.capsule)) {
+            throwOrLog(model, "capsule ${model.top!!.capsule} not found in model $model", true)
         }
 
         checkPackage(model)

@@ -2,8 +2,8 @@ package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTModelBuilder
 
-open class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
-    private class Builder(private val name: String, private val top: RTCapsule) : RTModelBuilder {
+open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(name) {
+    private class Builder(private val name: String, private var top: RTCapsule? = null) : RTModelBuilder {
         private val capsules = mutableListOf<RTCapsule>()
         private val protocols = mutableListOf<RTProtocol>()
         private val classes = mutableListOf<RTClass>()
@@ -11,6 +11,7 @@ open class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
         private val artifacts = mutableListOf<RTArtifact>()
         private val packages = mutableListOf<RTPackage>()
 
+        override fun top(capsule: RTCapsule) = apply { this.top = top }
         override fun capsule(capsule: RTCapsule) = apply { capsules.add(capsule) }
         override fun protocol(protocol: RTProtocol) = apply { protocols.add(protocol) }
         override fun klass(klass: RTClass) = apply { classes.add(klass) }
@@ -19,9 +20,9 @@ open class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
         override fun pkg(pkg: RTPackage) = apply { packages.add(pkg) }
 
         override fun build(): RTModel {
-            val model = RTModel(name, RTCapsulePart(top.name, top))
-            if (!capsules.contains(top))
-                model.capsules.add(top)
+            val model = RTModel(name, top?.let { RTCapsulePart(top!!.name, top!!) })
+            if (top != null && !capsules.contains(top))
+                model.capsules.add(top!!)
 
             model.capsules.addAll(capsules)
             model.protocols.addAll(protocols)
@@ -35,7 +36,7 @@ open class RTModel(name: String, var top: RTCapsulePart) : RTPackage(name) {
 
     companion object {
         @JvmStatic
-        fun builder(name: String, top: RTCapsule): RTModelBuilder {
+        fun builder(name: String, top: RTCapsule? = null): RTModelBuilder {
             return Builder(name, top)
         }
     }

@@ -31,7 +31,7 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     }
 
     override fun visitModel(model: RTModel): RTModel {
-        val copy = RTModel(model.name, visitPart(model.top))
+        val copy = RTModel(model.name, model.top?.let { visitPart(model.top!!) })
         model.capsules.forEach { copy.capsules.add(visit(it) as RTCapsule) }
         model.classes.forEach { copy.classes.add(visit(it) as RTClass) }
         model.enumerations.forEach { copy.enumerations.add(visit(it) as RTEnumeration) }
