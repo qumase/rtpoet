@@ -11,7 +11,7 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
         private val artifacts = mutableListOf<RTArtifact>()
         private val packages = mutableListOf<RTPackage>()
 
-        override fun top(capsule: RTCapsule) = apply { this.top = top }
+        override fun top(top: RTCapsule) = apply { this.top = top }
         override fun capsule(capsule: RTCapsule) = apply { capsules.add(capsule) }
         override fun protocol(protocol: RTProtocol) = apply { protocols.add(protocol) }
         override fun klass(klass: RTClass) = apply { classes.add(klass) }
