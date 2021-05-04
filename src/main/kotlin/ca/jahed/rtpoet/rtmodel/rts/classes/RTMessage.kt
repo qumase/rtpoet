@@ -1,3 +1,3 @@
 package ca.jahed.rtpoet.rtmodel.rts.classes
 
-object RTMessage : RTSystemClass("UMLRTMessage")
+object RTMessage : RTSystemClass("MessageId")

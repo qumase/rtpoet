@@ -1,3 +1,3 @@
 package ca.jahed.rtpoet.rtmodel.rts.classes
 
-object RTTimerId : RTSystemClass("UMLRTTimerId")
+object RTTimerId : RTSystemClass("TimerId")
