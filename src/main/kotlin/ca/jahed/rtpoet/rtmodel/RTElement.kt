@@ -4,6 +4,10 @@ import NameUtils
 import java.io.Serializable
 
 abstract class RTElement(open var name: String = NameUtils.randomString(8)) : Comparable<RTElement>, Serializable {
+    init {
+        if (name.isEmpty()) name = NameUtils.randomString(8)
+    }
+
     override fun compareTo(other: RTElement): Int {
         if (name == other.name)
             return 0
