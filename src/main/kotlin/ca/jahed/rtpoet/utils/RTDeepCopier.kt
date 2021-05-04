@@ -8,6 +8,7 @@ import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
 import ca.jahed.rtpoet.rtmodel.types.RTType
 import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
+import ca.jahed.rtpoet.rtmodel.values.*
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
 class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisitor() {
@@ -151,7 +152,7 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
         val copy = RTAttribute(attribute.name, visit(attribute.type) as RTType)
         copy.visibility = attribute.visibility
         copy.replication = attribute.replication
-        copy.value = attribute.value
+        copy.value = if (attribute.value != null) visit(attribute.value!!) as RTValue else null
         copy.properties =
             if (attribute.properties != null)
                 visit(attribute.properties!!) as RTAttributeProperties
@@ -183,10 +184,19 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     }
 
     override fun visitType(type: RTType): RTType {
-        val copy =
-            if (type is RTPrimitiveType || type is RTSystemClass) type
-            else visit(type as RTClass) as RTClass
-        return copy
+        return if (type is RTPrimitiveType || type is RTSystemClass) type
+        else visit(type as RTClass) as RTClass
+    }
+
+    override fun visitValue(value: RTValue): RTValue {
+        return when (value) {
+            is RTExpression -> RTExpression(visitAction(value.value))
+            is RTLiteralBoolean -> RTLiteralBoolean(value.value)
+            is RTLiteralInteger -> RTLiteralInteger(value.value)
+            is RTLiteralString -> RTLiteralString(value.value)
+            is RTLiteralReal -> RTLiteralReal(value.value)
+            else -> value
+        }
     }
 
     override fun visitStateMachine(statemachine: RTStateMachine): RTStateMachine {

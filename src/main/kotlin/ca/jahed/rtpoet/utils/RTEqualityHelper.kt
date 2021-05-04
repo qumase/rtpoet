@@ -7,6 +7,7 @@ import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
 import ca.jahed.rtpoet.rtmodel.types.RTType
 import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
+import ca.jahed.rtpoet.rtmodel.values.*
 
 class RTEqualityHelper {
     private val cache = mutableMapOf<Pair<RTElement, RTElement>, Boolean>()
@@ -63,6 +64,7 @@ class RTEqualityHelper {
                 is RTPackage -> checkPackage(a, b as RTPackage)
                 is RTClass -> checkClass(a, b as RTClass)
                 is RTType -> checkType(a, b as RTType)
+                is RTValue -> checkValue(a, b as RTValue)
 
                 is RTStateMachine -> checkStateMachine(a, b as RTStateMachine)
                 is RTCompositeState -> checkCompositeState(a, b as RTCompositeState)
@@ -207,10 +209,10 @@ class RTEqualityHelper {
     }
 
     private fun checkAttribute(a: RTAttribute, b: RTAttribute): Boolean {
-        return a.value == b.value
-                && a.replication == b.replication
+        return a.replication == b.replication
                 && a.visibility == b.visibility
                 && check(a.type, b.type)
+                && check(a.value, b.value)
     }
 
     private fun checkAction(a: RTAction, b: RTAction): Boolean {
@@ -235,6 +237,17 @@ class RTEqualityHelper {
         if ((a is RTPrimitiveType && b is RTPrimitiveType))
             return a == b
         return check(a as RTClass, b as RTClass)
+    }
+
+    private fun checkValue(a: RTValue, b: RTValue): Boolean {
+        return when (a) {
+            is RTLiteralBoolean -> a.value == (b as RTLiteralBoolean).value
+            is RTLiteralInteger -> a.value == (b as RTLiteralInteger).value
+            is RTLiteralString -> a.value == (b as RTLiteralString).value
+            is RTLiteralReal -> a.value == (b as RTLiteralReal).value
+            is RTExpression -> checkAction(a.value, (b as RTExpression).value)
+            else -> true
+        }
     }
 
     private fun checkStateMachine(a: RTStateMachine, b: RTStateMachine): Boolean {

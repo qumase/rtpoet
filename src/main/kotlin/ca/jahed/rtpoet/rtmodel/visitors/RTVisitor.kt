@@ -4,6 +4,7 @@ import ca.jahed.rtpoet.rtmodel.*
 import ca.jahed.rtpoet.rtmodel.cppproperties.*
 import ca.jahed.rtpoet.rtmodel.sm.*
 import ca.jahed.rtpoet.rtmodel.types.RTType
+import ca.jahed.rtpoet.rtmodel.values.RTValue
 
 abstract class RTVisitor {
     open fun visitModel(model: RTModel): Any = {}
@@ -22,6 +23,7 @@ abstract class RTVisitor {
     open fun visitOperation(operation: RTOperation): Any = {}
     open fun visitParameter(param: RTParameter): Any = {}
     open fun visitType(type: RTType): Any = {}
+    open fun visitValue(value: RTValue): Any = {}
 
     open fun visitStateMachine(statemachine: RTStateMachine): Any = {}
     open fun visitCompositeState(state: RTCompositeState): Any = {}
@@ -57,6 +59,7 @@ abstract class RTVisitor {
             is RTPackage -> visitPackage(element)
             is RTClass -> visitClass(element)
             is RTType -> visitType(element)
+            is RTValue -> visitValue(element)
 
             is RTStateMachine -> visitStateMachine(element)
             is RTCompositeState -> visitCompositeState(element)
