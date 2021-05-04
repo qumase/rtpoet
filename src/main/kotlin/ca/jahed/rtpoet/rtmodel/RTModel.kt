@@ -36,7 +36,12 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
 
     companion object {
         @JvmStatic
-        fun builder(name: String, top: RTCapsule? = null): RTModelBuilder {
+        fun builder(name: String): RTModelBuilder {
+            return Builder(name, null)
+        }
+
+        @JvmStatic
+        fun builder(name: String, top: RTCapsule): RTModelBuilder {
             return Builder(name, top)
         }
     }
