@@ -1,6 +1,6 @@
 import kotlin.random.Random
 
-object NameUtils {
+internal object NameUtils {
     private val charPool: List<Char> = ('a'..'z') + ('A'..'Z')
     private val random = Random(0)
 
