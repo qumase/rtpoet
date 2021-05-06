@@ -8,7 +8,7 @@ import ca.jahed.rtpoet.rtmodel.rts.classes.*
 import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
 import ca.jahed.rtpoet.rtmodel.types.RTType
-import ca.jahed.rtpoet.rtmodel.types.primitivetype.RTPrimitiveType
+import ca.jahed.rtpoet.rtmodel.types.primitivetype.*
 import ca.jahed.rtpoet.rtmodel.values.RTExpression
 import ca.jahed.rtpoet.rtmodel.values.RTLiteralInteger
 import ca.jahed.rtpoet.rtmodel.values.RTLiteralReal
@@ -16,7 +16,14 @@ import ca.jahed.rtpoet.rtmodel.values.RTLiteralString
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
 class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
-    private val primitiveTypes = setOf("String", "boolean", "double", "int")
+    private val typeMap = mapOf(
+        Pair(RTString, "String"),
+        Pair(RTBoolean, "boolean"),
+        Pair(RTInteger, "int"),
+        Pair(RTReal, "double"),
+        Pair(RTUnlimitedNatural, "int")
+    )
+
     private val qualifiedNames = mutableMapOf<RTElement, String>()
     private var topCapsule: RTCapsule? = null
 
@@ -284,9 +291,11 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
     }
 
     private fun visitPrimitiveType(type: RTPrimitiveType): String {
-        if (type.name in primitiveTypes)
-            return type.name
-        return "`${type.name}`"
+        return when {
+            type in typeMap -> typeMap[type]!!
+            type.name in typeMap.values -> type.name
+            else -> "`${type.name}`"
+        }
     }
 
     private fun visitSystemClass(klass: RTSystemClass): String {
