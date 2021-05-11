@@ -6,7 +6,7 @@ import ca.jahed.rtpoet.rtmodel.sm.RTState
 import ca.jahed.rtpoet.rtmodel.sm.RTStateMachine
 import ca.jahed.rtpoet.rtmodel.sm.RTTransition
 
-open class RTDepthVisitor(private val model: RTModel) : RTVisitor() {
+open class RTDepthVisitor : RTVisitor() {
     override fun visitModel(model: RTModel): Any {
         visitPackage(model)
         if (model.top != null) visit(model.top!!)
@@ -14,12 +14,12 @@ open class RTDepthVisitor(private val model: RTModel) : RTVisitor() {
     }
 
     override fun visitPackage(pkg: RTPackage): Any {
-        model.capsules.forEach { visit(it) }
-        model.classes.forEach { visit(it) }
-        model.artifacts.forEach { visit(it) }
-        model.enumerations.forEach { visit(it) }
-        model.protocols.forEach { visit(it) }
-        model.packages.forEach { visit(it) }
+        pkg.capsules.forEach { visit(it) }
+        pkg.classes.forEach { visit(it) }
+        pkg.artifacts.forEach { visit(it) }
+        pkg.enumerations.forEach { visit(it) }
+        pkg.protocols.forEach { visit(it) }
+        pkg.packages.forEach { visit(it) }
         return super.visitPackage(pkg)
     }
 

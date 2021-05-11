@@ -4,7 +4,7 @@ import ca.jahed.rtpoet.rtmodel.RTElement
 import ca.jahed.rtpoet.rtmodel.RTModel
 import ca.jahed.rtpoet.rtmodel.visitors.RTDepthVisitor
 
-class RTQualifiedNameHelper(model: RTModel) : RTDepthVisitor(model) {
+class RTQualifiedNameHelper(model: RTModel) : RTDepthVisitor() {
     private val qualifiedNames = mutableMapOf<RTElement, String>()
     private val currentPrefix = mutableListOf<String>()
 
