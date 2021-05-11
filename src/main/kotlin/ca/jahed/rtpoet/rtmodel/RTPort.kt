@@ -1,6 +1,7 @@
 package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTPortBuilder
+import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 
 open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, protocol) {
     var behaviour = false
@@ -21,7 +22,11 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
     }
 
     fun isInternal(): Boolean {
-        return wired && service && behaviour && visibility != RTVisibilityKind.PUBLIC
+        return behaviour && visibility != RTVisibilityKind.PUBLIC
+    }
+
+    fun isSystem(): Boolean {
+        return protocol is RTSystemProtocol
     }
 
     fun isSAP(): Boolean {
@@ -62,6 +67,7 @@ open class RTPort(name: String, var protocol: RTProtocol) : RTAttribute(name, pr
 
         override fun external() = apply { behaviour().wired().service().publicVisibility() }
         override fun internal() = apply { behaviour().wired().protectedVisibility() }
+        override fun system() = apply { behaviour().protectedVisibility() }
         override fun sap() = apply { behaviour().autoRegistration().protectedVisibility() }
         override fun spp() = apply { behaviour().publish().service().autoRegistration().publicVisibility() }
         override fun relay() = apply { service().wired().publicVisibility() }

@@ -8,6 +8,7 @@ interface RTPortBuilder {
     fun relay(): RTPortBuilder
     fun external(): RTPortBuilder
     fun internal(): RTPortBuilder
+    fun system(): RTPortBuilder
 
     fun replication(replication: Int): RTPortBuilder
     fun behaviour(): RTPortBuilder
