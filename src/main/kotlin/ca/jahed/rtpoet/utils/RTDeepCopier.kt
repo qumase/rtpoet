@@ -32,7 +32,7 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     }
 
     override fun visitModel(model: RTModel): RTModel {
-        val copy = RTModel(model.name, model.top?.let { visitPart(model.top!!) })
+        val copy = RTModel(model.name, model.top?.let { visit(model.top!!) as RTCapsulePart })
         model.capsules.forEach { copy.capsules.add(visit(it) as RTCapsule) }
         model.classes.forEach { copy.classes.add(visit(it) as RTClass) }
         model.enumerations.forEach { copy.enumerations.add(visit(it) as RTEnumeration) }
@@ -123,12 +123,12 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
     }
 
     override fun visitConnector(connector: RTConnector): RTConnector {
-        val part1Copy = if (connector.end1.part != null) visitPart(connector.end1.part!!) else null
-        val part2Copy = if (connector.end2.part != null) visitPart(connector.end2.part!!) else null
+        val part1Copy = if (connector.end1.part != null) visit(connector.end1.part!!) as RTCapsulePart else null
+        val part2Copy = if (connector.end2.part != null) visit(connector.end2.part!!) as RTCapsulePart else null
 
         val copy = RTConnector(
-            RTConnectorEnd(visitPort(connector.end1.port), part1Copy),
-            RTConnectorEnd(visitPort(connector.end2.port), part2Copy),
+            RTConnectorEnd(visit(connector.end1.port) as RTPort, part1Copy),
+            RTConnectorEnd(visit(connector.end2.port) as RTPort, part2Copy),
         )
         return copy
     }
@@ -190,7 +190,7 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
 
     override fun visitValue(value: RTValue): RTValue {
         return when (value) {
-            is RTExpression -> RTExpression(visitAction(value.value))
+            is RTExpression -> RTExpression(visit(value.value) as RTAction)
             is RTLiteralBoolean -> RTLiteralBoolean(value.value)
             is RTLiteralInteger -> RTLiteralInteger(value.value)
             is RTLiteralString -> RTLiteralString(value.value)
@@ -208,8 +208,8 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
 
     override fun visitCompositeState(state: RTCompositeState): RTCompositeState {
         val copy = RTCompositeState(state.name)
-        copy.entryAction = if (state.entryAction != null) visitAction(state.entryAction!!) else null
-        copy.exitAction = if (state.exitAction != null) visitAction(state.exitAction!!) else null
+        copy.entryAction = if (state.entryAction != null) visit(state.entryAction!!) as RTAction else null
+        copy.exitAction = if (state.exitAction != null) visit(state.exitAction!!) as RTAction else null
         state.states().forEach { copy.states().add(visit(it) as RTGenericState) }
         state.transitions().forEach { copy.transitions().add(visit(it) as RTTransition) }
         return copy
@@ -221,15 +221,15 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
 
     override fun visitState(state: RTState): RTState {
         val copy = RTState(state.name)
-        copy.entryAction = if (state.entryAction != null) visitAction(state.entryAction!!) else null
-        copy.exitAction = if (state.exitAction != null) visitAction(state.exitAction!!) else null
+        copy.entryAction = if (state.entryAction != null) visit(state.entryAction!!) as RTAction else null
+        copy.exitAction = if (state.exitAction != null) visit(state.exitAction!!) as RTAction else null
         return copy
     }
 
     override fun visitTransition(transition: RTTransition): RTTransition {
         val copy = RTTransition(visit(transition.source) as RTGenericState, visit(transition.target) as RTGenericState)
-        copy.guard = if (transition.guard != null) visitAction(transition.guard!!) else null
-        copy.action = if (transition.action != null) visitAction(transition.action!!) else null
+        copy.guard = if (transition.guard != null) visit(transition.guard!!) as RTAction else null
+        copy.action = if (transition.action != null) visit(transition.action!!) as RTAction else null
         transition.triggers.forEach { copy.triggers.add(visit(it) as RTTrigger) }
         return copy
     }
