@@ -2,6 +2,7 @@ package ca.jahed.rtpoet.utils
 
 import ca.jahed.rtpoet.rtmodel.*
 import ca.jahed.rtpoet.rtmodel.cppproperties.*
+import ca.jahed.rtpoet.rtmodel.rts.RTSystemSignal
 import ca.jahed.rtpoet.rtmodel.rts.classes.RTSystemClass
 import ca.jahed.rtpoet.rtmodel.rts.protocols.RTSystemProtocol
 import ca.jahed.rtpoet.rtmodel.sm.*
@@ -147,7 +148,7 @@ class RTEqualityHelper {
 
     private fun checkClass(a: RTClass, b: RTClass): Boolean {
         if ((a is RTSystemClass && b is RTSystemClass))
-            return a == b
+            return a::class.java == b::class.java
 
         return a.superClass == b.superClass
                 && checkList(a.attributes, b.attributes)
@@ -156,7 +157,7 @@ class RTEqualityHelper {
 
     private fun checkProtocol(a: RTProtocol, b: RTProtocol): Boolean {
         if ((a is RTSystemProtocol && b is RTSystemProtocol))
-            return a == b
+            return a::class.java == b::class.java
 
         return checkList(a.inputSignals, b.inputSignals)
                 && checkList(a.outputSignals, b.outputSignals)
@@ -201,6 +202,8 @@ class RTEqualityHelper {
     }
 
     private fun checkSignal(a: RTSignal, b: RTSignal): Boolean {
+        if (a is RTSystemSignal && b is RTSystemSignal)
+            return a::class.java == b::class.java
         return checkOrderedList(a.parameters, b.parameters)
     }
 
@@ -235,7 +238,7 @@ class RTEqualityHelper {
 
     private fun checkType(a: RTType, b: RTType): Boolean {
         if ((a is RTPrimitiveType && b is RTPrimitiveType))
-            return a == b
+            return a::class.java == b::class.java
         return check(a as RTClass, b as RTClass)
     }
 
