@@ -15,7 +15,7 @@ import ca.jahed.rtpoet.rtmodel.values.RTLiteralReal
 import ca.jahed.rtpoet.rtmodel.values.RTLiteralString
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
 
-class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
+open class RTTextualModelGenerator : RTCachedVisitor() {
     private val typeMap = mapOf(
         Pair(RTString, "String"),
         Pair(RTBoolean, "boolean"),
@@ -109,7 +109,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitPackageBody(pkg: RTPackage): String {
+    open fun visitPackageBody(pkg: RTPackage): String {
         return """
             ${pkg.packages.joinToString("") { visit(it) }}
             ${pkg.artifacts.joinToString("") { visit(it) }}
@@ -140,7 +140,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitClassBody(klass: RTClass): String {
+    open fun visitClassBody(klass: RTClass): String {
         return """
             ${if (klass.properties != null) visit(klass.properties!!) else ""}
             ${klass.attributes.joinToString("") { visitAttribute(it) }}
@@ -170,7 +170,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitPartKind(part: RTCapsulePart): String {
+    open fun visitPartKind(part: RTCapsulePart): String {
         return when {
             part.optional -> "optional"
             part.plugin -> "plugin"
@@ -186,7 +186,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitPortKind(port: RTPort): String {
+    open fun visitPortKind(port: RTPort): String {
         if (port.type is RTSystemProtocol) return "internal"
 
         return when {
@@ -198,7 +198,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
         }
     }
 
-    private fun visitPortRegistrationKind(port: RTPort): String {
+    open fun visitPortRegistrationKind(port: RTPort): String {
         return when (port.registrationType) {
             RTPort.RegistrationType.APPLICATION -> "app"
             RTPort.RegistrationType.AUTOMATIC_LOCKED -> "autolock"
@@ -206,7 +206,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
         }
     }
 
-    private fun visitPortType(port: RTPort): String {
+    open fun visitPortType(port: RTPort): String {
         if (port.type is RTSystemProtocol) return "RTSLibrary.${port.type.name}"
         return qualifiedNames[port.type]!!
     }
@@ -217,7 +217,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitConnectorEnd(end: RTConnectorEnd): String {
+    open fun visitConnectorEnd(end: RTConnectorEnd): String {
         return """${if (end.part != null) "${end.part!!.name}." else ""}${end.port.name}"""
     }
 
@@ -243,7 +243,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitAttributeValue(attribute: RTAttribute): String {
+    open fun visitAttributeValue(attribute: RTAttribute): String {
         return when (val value = attribute.value) {
             is RTLiteralString -> """"${value.value}""""
             is RTExpression -> "`${visitAction(value.value)}`"
@@ -253,7 +253,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
         }
     }
 
-    private fun visitVisibilityKind(visibility: RTVisibilityKind): String {
+    open fun visitVisibilityKind(visibility: RTVisibilityKind): String {
         return when (visibility) {
             RTVisibilityKind.PUBLIC -> "public"
             RTVisibilityKind.PRIVATE -> "private"
@@ -290,7 +290,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
         }
     }
 
-    private fun visitPrimitiveType(type: RTPrimitiveType): String {
+    open fun visitPrimitiveType(type: RTPrimitiveType): String {
         return when {
             type in typeMap -> typeMap[type]!!
             type.name in typeMap.values -> type.name
@@ -298,7 +298,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
         }
     }
 
-    private fun visitSystemClass(klass: RTSystemClass): String {
+    open fun visitSystemClass(klass: RTSystemClass): String {
         return when (klass) {
             is RTTimerId -> "RTSLibrary.TimerId"
             is RTCapsuleId -> "RTSLibrary.CapsuleId"
@@ -349,7 +349,7 @@ class RTTextualModelGenerator private constructor() : RTCachedVisitor() {
             """
     }
 
-    private fun visitStateActions(state: RTState): String {
+    open fun visitStateActions(state: RTState): String {
         return """
             ${
             if (state.entryAction != null) """
