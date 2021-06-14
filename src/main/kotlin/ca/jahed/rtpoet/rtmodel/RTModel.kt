@@ -33,16 +33,6 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
             model.packages.addAll(packages)
             return model
         }
-
-        fun save(path: String) {
-            save(File(path))
-        }
-
-        fun save(file: File) {
-            val objectStream = ObjectOutputStream(FileOutputStream(file))
-            objectStream.writeObject(this)
-            objectStream.close()
-        }
     }
 
     companion object {
@@ -68,5 +58,15 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
             objectStream.close()
             return model
         }
+    }
+
+    fun save(path: String) {
+        save(File(path))
+    }
+
+    fun save(file: File) {
+        val objectStream = ObjectOutputStream(FileOutputStream(file))
+        objectStream.writeObject(this)
+        objectStream.close()
     }
 }
