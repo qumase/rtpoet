@@ -1,6 +1,7 @@
 package ca.jahed.rtpoet.rtmodel
 
 import ca.jahed.rtpoet.rtmodel.builders.RTModelBuilder
+import java.io.*
 
 open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(name) {
     private class Builder(private val name: String, private var top: RTCapsule? = null) : RTModelBuilder {
@@ -32,6 +33,16 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
             model.packages.addAll(packages)
             return model
         }
+
+        fun save(path: String) {
+            save(File(path))
+        }
+
+        fun save(file: File) {
+            val objectStream = ObjectOutputStream(FileOutputStream(file))
+            objectStream.writeObject(this)
+            objectStream.close()
+        }
     }
 
     companion object {
@@ -43,6 +54,19 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
         @JvmStatic
         fun builder(name: String, top: RTCapsule): RTModelBuilder {
             return Builder(name, top)
+        }
+
+        @JvmStatic
+        fun load(path: String): RTModel {
+            return load(File(path))
+        }
+
+        @JvmStatic
+        fun load(file: File): RTModel {
+            val objectStream = ObjectInputStream(FileInputStream(file))
+            val model = objectStream.readObject() as RTModel
+            objectStream.close()
+            return model
         }
     }
 }
