@@ -29,6 +29,11 @@ open class RTConnector(
             this.end2 = end2
         }
 
+        constructor(end1: RTConnectorEndBuilder? = null, end2: RTConnectorEndBuilder? = null) : this() {
+            this.end1Builder = end1
+            this.end2Builder = end2
+        }
+
         override fun end1(end: RTConnectorEnd) = apply {
             this.end1 = end
             this.end1Builder = null
@@ -71,6 +76,14 @@ open class RTConnector(
         fun builder(
             end1: RTConnectorEnd? = null,
             end2: RTConnectorEnd? = null,
+        ): RTConnectorBuilder {
+            return Builder(end1, end2)
+        }
+
+        @JvmStatic
+        fun builder(
+            end1: RTConnectorEndBuilder? = null,
+            end2: RTConnectorEndBuilder? = null,
         ): RTConnectorBuilder {
             return Builder(end1, end2)
         }

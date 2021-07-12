@@ -34,10 +34,6 @@ open class RTConnectorEnd(var port: RTPort, var part: RTCapsulePart? = null) : R
 
         override fun build(capsule: RTCapsule): RTConnectorEnd {
             part = part ?: capsule.parts.find { it.name == partStr }
-                    ?: throw BuildException("""
-                            Part $partStr not found in capsule $capsule
-                        """.trimIndent())
-
             val partType = (part?.type ?: capsule) as RTCapsule
 
             port = port ?: partType.ports.find { it.name == portStr }
