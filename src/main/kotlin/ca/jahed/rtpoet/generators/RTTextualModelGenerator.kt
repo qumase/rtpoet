@@ -37,6 +37,9 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
     private fun doGenerate(model: RTModel): String {
         if (model.top != null) topCapsule = model.top!!.capsule
         computeQualifiedNames(model)
+
+        model.imports.forEach { computeQualifiedNames(it) }
+
         return formatOutput(visit(model))
     }
 
@@ -52,7 +55,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
                 val isBlockEnd = (!ignore && line.endsWith("}") || (ignore && line.endsWith("`")))
 
                 if (isBlockStart) output += "\n"
-                if (isBlockEnd) indentation--
+                if (isBlockEnd && indentation > 0) indentation--
                 output += "\t".repeat(indentation) + line + "\n"
                 if (isBlockStart) indentation++
                 if (isBlockEnd) output += "\n"
@@ -96,7 +99,8 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
     override fun visitModel(model: RTModel): String {
         return """
             model ${model.name} {
-               ${visitPackageBody(model)}
+                ${model.imports.joinToString("\n") { "import ${it.name}" }}
+                ${visitPackageBody(model)}
             }
             """
     }
@@ -160,7 +164,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
 
     override fun visitEnumeration(enumeration: RTEnumeration): String {
         return """
-            enum ${enumeration.name} { ${enumeration.literals.joinToString(", ") { it }} }
+            enum ${enumeration.name} { ${enumeration.literals.joinToString(", ") { """"$it"""" }} }
             """
     }
 

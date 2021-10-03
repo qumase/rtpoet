@@ -10,6 +10,7 @@ class RTQualifiedNameHelper(model: RTModel) : RTDepthVisitor() {
 
     init {
         visit(model)
+        model.imports.forEach { visit(it) }
     }
 
     fun getQualifiedName(element: RTElement): String {

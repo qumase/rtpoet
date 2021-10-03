@@ -10,5 +10,6 @@ interface RTModelBuilder {
     fun enumeration(enumeration: RTEnumeration): RTModelBuilder
     fun artifact(artifact: RTArtifact): RTModelBuilder
     fun pkg(pkg: RTPackage): RTModelBuilder
+    fun imprt(model: RTModel): RTModelBuilder
     fun build(): RTModel
 }

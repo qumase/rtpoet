@@ -4,6 +4,8 @@ import ca.jahed.rtpoet.rtmodel.builders.RTModelBuilder
 import java.io.*
 
 open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(name) {
+    val imports = mutableListOf<RTModel>()
+
     private class Builder(private val name: String, private var top: RTCapsule? = null) : RTModelBuilder {
         private val capsules = mutableListOf<RTCapsule>()
         private val protocols = mutableListOf<RTProtocol>()
@@ -11,6 +13,7 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
         private val enumerations = mutableListOf<RTEnumeration>()
         private val artifacts = mutableListOf<RTArtifact>()
         private val packages = mutableListOf<RTPackage>()
+        private val imports = mutableListOf<RTModel>()
 
         override fun top(top: RTCapsule) = apply { this.top = top }
         override fun capsule(capsule: RTCapsule) = apply { capsules.add(capsule) }
@@ -19,6 +22,7 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
         override fun enumeration(enumeration: RTEnumeration) = apply { enumerations.add(enumeration) }
         override fun artifact(artifact: RTArtifact) = apply { artifacts.add(artifact) }
         override fun pkg(pkg: RTPackage) = apply { packages.add(pkg) }
+        override fun imprt(model: RTModel) = apply { imports.add(model) }
 
         override fun build(): RTModel {
             val model = RTModel(name, top?.let { RTCapsulePart(top!!.name, top!!) })
@@ -31,6 +35,7 @@ open class RTModel(name: String, var top: RTCapsulePart? = null) : RTPackage(nam
             model.enumerations.addAll(enumerations)
             model.artifacts.addAll(artifacts)
             model.packages.addAll(packages)
+            model.imports.addAll(imports)
             return model
         }
     }
