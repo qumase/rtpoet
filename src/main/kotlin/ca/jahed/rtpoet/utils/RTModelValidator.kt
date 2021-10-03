@@ -49,6 +49,8 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
         pkg.classes.forEach { checkClass(it) }
         pkg.protocols.forEach { checkProtocol(it) }
         pkg.packages.forEach { checkPackage(it) }
+
+        if (pkg is RTModel) pkg.imports.forEach { checkPackage(it) }
     }
 
     private fun checkCapsule(capsule: RTCapsule) {
@@ -98,6 +100,9 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
         if (pkg.capsules.contains(capsule))
             return true
         pkg.packages.forEach { if (hasCapsule(it, capsule)) return true }
+
+        if (pkg is RTModel)
+            pkg.imports.forEach { if (hasCapsule(it, capsule)) return true }
         return false
     }
 
@@ -108,6 +113,9 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
         if (pkg.classes.contains(klass))
             return true
         pkg.packages.forEach { if (hasClass(it, klass)) return true }
+
+        if (pkg is RTModel)
+            pkg.imports.forEach { if (hasClass(it, klass)) return true }
         return false
     }
 
@@ -118,6 +126,9 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
         if (pkg.protocols.contains(protocol))
             return true
         pkg.packages.forEach { if (hasProtocol(it, protocol)) return true }
+
+        if (pkg is RTModel)
+            pkg.imports.forEach { if (hasProtocol(it, protocol)) return true }
         return false
     }
 
@@ -125,6 +136,9 @@ class RTModelValidator(private val model: RTModel, private val throwExceptions: 
         if (pkg.enumerations.contains(enumeration))
             return true
         pkg.packages.forEach { if (hasEnumeration(it, enumeration)) return true }
+
+        if (pkg is RTModel)
+            pkg.imports.forEach { if (hasEnumeration(it, enumeration)) return true }
         return false
     }
 

@@ -14,8 +14,10 @@ import ca.jahed.rtpoet.rtmodel.values.RTLiteralInteger
 import ca.jahed.rtpoet.rtmodel.values.RTLiteralReal
 import ca.jahed.rtpoet.rtmodel.values.RTLiteralString
 import ca.jahed.rtpoet.rtmodel.visitors.RTCachedVisitor
+import ca.jahed.rtpoet.utils.RTQualifiedNameHelper
+import java.io.File
 
-open class RTTextualModelGenerator : RTCachedVisitor() {
+open class RTTextualModelGenerator(outputPath: String) : RTCachedVisitor() {
     private val typeMap = mapOf(
         Pair(RTString, "String"),
         Pair(RTBoolean, "boolean"),
@@ -24,20 +26,35 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
         Pair(RTUnlimitedNatural, "int")
     )
 
-    private val qualifiedNames = mutableMapOf<RTElement, String>()
-    private var topCapsule: RTCapsule? = null
+    private var qualifiedNames: RTQualifiedNameHelper? = null
+    private val topCapsules = mutableListOf<RTCapsule>()
+    private val outputDir = File(outputPath)
+
+    init {
+        outputDir.mkdirs()
+    }
 
     companion object {
         @JvmStatic
-        fun generate(model: RTModel): String {
-            return RTTextualModelGenerator().doGenerate(model)
+        fun generate(model: RTModel, outputDir: String = ""): String {
+            return RTTextualModelGenerator(outputDir).doGenerate(model)
         }
     }
 
     private fun doGenerate(model: RTModel): String {
-        if (model.top != null) topCapsule = model.top!!.capsule
-        computeQualifiedNames(model)
-        return formatOutput(visit(model))
+        if (qualifiedNames == null)
+            qualifiedNames = RTQualifiedNameHelper(model)
+
+//        var names = ""
+//        qualifiedNames!!.get().keys.forEach { key ->
+//            names += key.name + ": " + qualifiedNames!![key] + "\n"
+//        }
+//        File(outputDir, "qn.txt").writeText(names)
+
+        if (model.top != null) topCapsules.add(model.top!!.capsule)
+        val textualModel = formatOutput(visit(model))
+        File(outputDir, "${model.name}.rt").writeText(textualModel)
+        return textualModel
     }
 
     private fun formatOutput(code: String): String {
@@ -52,7 +69,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
                 val isBlockEnd = (!ignore && line.endsWith("}") || (ignore && line.endsWith("`")))
 
                 if (isBlockStart) output += "\n"
-                if (isBlockEnd) indentation--
+                if (isBlockEnd && indentation > 0) indentation--
                 output += "\t".repeat(indentation) + line + "\n"
                 if (isBlockStart) indentation++
                 if (isBlockEnd) output += "\n"
@@ -64,39 +81,17 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
         return output.trim()
     }
 
-    private fun computeQualifiedNames(
-        pkg: RTPackage,
-        parentQualifiedName: String = "",
-    ) {
-        val qualifiedName = computeQualifiedName(pkg, parentQualifiedName)
-        pkg.packages.forEach { computeQualifiedNames(it, qualifiedName) }
-        pkg.artifacts.forEach { computeQualifiedName(it, qualifiedName) }
-        pkg.classes.forEach { computeQualifiedName(it, qualifiedName) }
-        pkg.enumerations.forEach { computeQualifiedName(it, qualifiedName) }
-        pkg.capsules.forEach { computeQualifiedName(it, qualifiedName) }
-        pkg.protocols.forEach { computeQualifiedName(it, qualifiedName) }
-    }
-
-    private fun computeQualifiedName(
-        element: RTElement,
-        parentQualifiedName: String,
-    ): String {
-        val qualifiedName =
-            if (parentQualifiedName.isNotEmpty()) "$parentQualifiedName.${element.name}"
-            else element.name
-
-        qualifiedNames[element] = qualifiedName
-        return qualifiedName
-    }
-
     override fun visit(element: RTElement): String {
         return super.visit(element) as String
     }
 
     override fun visitModel(model: RTModel): String {
+        model.imports.forEach { doGenerate(it) }
+
         return """
             model ${model.name} {
-               ${visitPackageBody(model)}
+                ${model.imports.joinToString("\n") { """import "${it.name}.rt"""" }}
+                ${visitPackageBody(model)}
             }
             """
     }
@@ -122,7 +117,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
 
     override fun visitCapsule(capsule: RTCapsule): String {
         return """
-            ${if (capsule === topCapsule) "top " else ""}capsule ${capsule.name} {
+            ${if (capsule in topCapsules) "top " else ""}capsule ${capsule.name} {
                ${visitClassBody(capsule)}
                ${capsule.ports.joinToString("") { visit(it) }}
                ${capsule.parts.joinToString("") { visit(it) }}
@@ -160,13 +155,13 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
 
     override fun visitEnumeration(enumeration: RTEnumeration): String {
         return """
-            enum ${enumeration.name} { ${enumeration.literals.joinToString(", ") { it }} }
+            enum ${enumeration.name} { ${enumeration.literals.joinToString(", ") { """"$it"""" }} }
             """
     }
 
     override fun visitPart(part: RTCapsulePart): String {
         return """
-            ${visitPartKind(part)} part ${part.name}: ${qualifiedNames[part.type]!!}[${part.replication}]
+            ${visitPartKind(part)} part ${part.name}: ${qualifiedNames!![part.type]}[${part.replication}]
             """
     }
 
@@ -208,7 +203,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
 
     open fun visitPortType(port: RTPort): String {
         if (port.type is RTSystemProtocol) return "RTSLibrary.${port.type.name}"
-        return qualifiedNames[port.type]!!
+        return qualifiedNames!![port.type]
     }
 
     override fun visitConnector(connector: RTConnector): String {
@@ -286,7 +281,7 @@ open class RTTextualModelGenerator : RTCachedVisitor() {
         return when (type) {
             is RTPrimitiveType -> visitPrimitiveType(type)
             is RTSystemClass -> visitSystemClass(type)
-            else -> qualifiedNames[type]!!
+            else -> qualifiedNames!![type]
         }
     }
 

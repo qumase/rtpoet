@@ -10,13 +10,14 @@ class RTQualifiedNameHelper(model: RTModel) : RTDepthVisitor() {
 
     init {
         visit(model)
+        model.imports.forEach { visit(it) }
     }
 
-    fun getQualifiedName(element: RTElement): String {
+    operator fun get(element: RTElement): String {
         return qualifiedNames[element]!!
     }
 
-    fun getQualifiedNames(): MutableMap<RTElement, String> {
+    fun get(): MutableMap<RTElement, String> {
         return qualifiedNames
     }
 

@@ -38,6 +38,9 @@ class RTDeepCopier(private val ignore: List<Class<*>> = listOf()) : RTCachedVisi
         model.enumerations.forEach { copy.enumerations.add(visit(it) as RTEnumeration) }
         model.protocols.forEach { copy.protocols.add(visit(it) as RTProtocol) }
         model.packages.forEach { copy.packages.add(visit(it) as RTPackage) }
+
+        // Shallow copy imports
+        model.imports.forEach { copy.imports.add(it) }
         return copy
     }
 

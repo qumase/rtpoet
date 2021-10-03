@@ -46,7 +46,7 @@ class RTEqualityHelper {
         if (a.javaClass != b.javaClass)
             return false
 
-        return cache.getOrPut(Pair(a, b), {
+        return cache.getOrPut(Pair(a, b)) {
             when (a) {
                 is RTModel -> checkModel(a, b as RTModel)
                 is RTCapsule -> checkCapsule(a, b as RTCapsule)
@@ -85,7 +85,7 @@ class RTEqualityHelper {
 
                 else -> a === b
             }
-        })
+        }
     }
 
     private fun checkList(l1: List<RTElement>, l2: List<RTElement>): Boolean {
@@ -125,6 +125,7 @@ class RTEqualityHelper {
                 && checkList(a.enumerations, b.enumerations)
                 && checkList(a.protocols, b.protocols)
                 && checkList(a.packages, b.packages)
+                && checkList(a.imports, b.imports)
     }
 
     private fun checkPackage(a: RTPackage, b: RTPackage): Boolean {
