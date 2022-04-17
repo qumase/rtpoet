@@ -45,12 +45,6 @@ open class RTTextualModelGenerator(outputPath: String) : RTCachedVisitor() {
         if (qualifiedNames == null)
             qualifiedNames = RTQualifiedNameHelper(model)
 
-//        var names = ""
-//        qualifiedNames!!.get().keys.forEach { key ->
-//            names += key.name + ": " + qualifiedNames!![key] + "\n"
-//        }
-//        File(outputDir, "qn.txt").writeText(names)
-
         if (model.top != null) topCapsules.add(model.top!!.capsule)
         val textualModel = formatOutput(visit(model))
         File(outputDir, "${model.name}.rt").writeText(textualModel)

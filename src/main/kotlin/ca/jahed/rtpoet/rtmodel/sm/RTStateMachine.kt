@@ -7,7 +7,7 @@ import ca.jahed.rtpoet.rtmodel.builders.sm.RTStateMachineBuilder
 import ca.jahed.rtpoet.rtmodel.builders.sm.RTTransitionBuilder
 
 
-open class RTStateMachine private constructor(private val region: RTRegion) : IRTRegion, RTElement() {
+open class RTStateMachine private constructor(private val region: RTRegion) : RTElement(), IRTRegion {
 
     constructor() : this(RTRegion())
 
