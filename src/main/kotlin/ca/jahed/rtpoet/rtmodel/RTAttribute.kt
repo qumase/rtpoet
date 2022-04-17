@@ -47,7 +47,7 @@ open class RTAttribute(name: String, var type: RTType, var value: RTValue? = nul
             attribute.replication = replication
             attribute.visibility = visibility
             attribute.value = value
-            attribute.properties = propertiesBuilder?.build()
+            attribute.properties = propertiesBuilder?.build() ?: properties
             return attribute
         }
     }
