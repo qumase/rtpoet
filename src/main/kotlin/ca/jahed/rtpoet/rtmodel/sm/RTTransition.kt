@@ -128,11 +128,13 @@ open class RTTransition(
                             """.trimIndent())
 
                         matchedPorts.forEach { port ->
-                            if (!port.inputs().contains(signal)) throw BuildException("""
+                            if (signal.name != "*" && !port.inputs().contains(signal)) throw BuildException(
+                                """
                                 Signal $signal not an input to port $port(${port.protocol})
-                            """.trimIndent())
+                            """.trimIndent()
+                            )
 
-                            triggers.add(RTTrigger(signal, port))
+                            triggers.add(RTTrigger(port.inputs().find { it.name == signal.name }!!, port))
                         }
                     }
 
