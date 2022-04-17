@@ -26,7 +26,7 @@ publishing {
         mavenLocal()
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/kjahed/rtpoet")
+            url = uri("https://maven.pkg.github.com/qumase/rtpoet")
             credentials {
                 username = project.findProperty("gpr.user") ?: System.getenv("GH_USER")
                 password = project.findProperty("gpr.key") ?: System.getenv("GH_TOKEN")
@@ -49,7 +49,7 @@ publishing {
             pom {
                 name = 'RTPoet'
                 description = 'POJO representation for UML-RT models'
-                url = 'https://github.com/kjahed/rtpoet'
+                url = 'https://github.com/qumase/rtpoet'
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
@@ -64,9 +64,9 @@ publishing {
                     }
                 }
                 scm {
-                    connection = 'scm:git:git://github.com/kjahed/rtpoet.git'
-                    developerConnection = 'scm:git:ssh://github.com/kjahed/rtpoet.git'
-                    url = 'https://github.com/kjahed/rtpoet/'
+                    connection = 'scm:git:git://github.com/qumase/rtpoet.git'
+                    developerConnection = 'scm:git:ssh://github.com/qumase/rtpoet.git'
+                    url = 'https://github.com/qumase/rtpoet/'
                 }
             }
         }
